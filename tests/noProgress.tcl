@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 # The default is not to show the progress meter.
 

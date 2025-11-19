@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 puts "nobody==1 --- header==1"
 curl::transfer -url "ftp://127.0.0.1/pub/indust2.gif" -nobody 1 -header 1

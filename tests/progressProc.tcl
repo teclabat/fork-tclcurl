@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 proc ProgressCallback {dltotal dlnow ultotal ulnow} {
 

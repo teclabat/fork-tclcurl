@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 
 set fileContent "This is what we will send as if it was the content of a file"

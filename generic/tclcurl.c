@@ -24,6 +24,8 @@
 #include <unistd.h>
 #endif
 
+#define NS_PREFIX PACKAGE_NAME"::"
+
 /*
  *----------------------------------------------------------------------
  *
@@ -38,7 +40,7 @@
  */
 
 EXTERN int
-Tclcurl_Init (Tcl_Interp *interp) {
+Curl_Init (Tcl_Interp *interp) {
 
 #ifdef USE_TCL_STUBS
     if (Tcl_InitStubs(interp,"8.5",0)==NULL) {
@@ -50,28 +52,32 @@ Tclcurl_Init (Tcl_Interp *interp) {
     }
 #endif
 
-    Tcl_CreateObjCommand (interp,"::curl::init",curlInitObjCmd,
+    // create namespace
+    if (Tcl_CreateNamespace(interp, NS_PREFIX, NULL, NULL) == NULL)
+        return TCL_ERROR;
+
+    Tcl_CreateObjCommand (interp, NS_PREFIX "init",curlInitObjCmd,
             (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
-    Tcl_CreateObjCommand (interp,"::curl::version",curlVersion,
+    Tcl_CreateObjCommand (interp, NS_PREFIX "version",curlVersion,
             (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
-    Tcl_CreateObjCommand (interp,"::curl::escape",curlEscape,
+    Tcl_CreateObjCommand (interp, NS_PREFIX "escape",curlEscape,
             (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
-    Tcl_CreateObjCommand (interp,"::curl::unescape",curlUnescape,
+    Tcl_CreateObjCommand (interp, NS_PREFIX "unescape",curlUnescape,
             (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
-    Tcl_CreateObjCommand (interp,"::curl::versioninfo",curlVersionInfo,
+    Tcl_CreateObjCommand (interp, NS_PREFIX "versioninfo",curlVersionInfo,
             (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
-    Tcl_CreateObjCommand (interp,"::curl::shareinit",curlShareInitObjCmd,
+    Tcl_CreateObjCommand (interp, NS_PREFIX "shareinit",curlShareInitObjCmd,
             (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
-    Tcl_CreateObjCommand (interp,"::curl::easystrerror", curlEasyStringError,
+    Tcl_CreateObjCommand (interp, NS_PREFIX "easystrerror", curlEasyStringError,
             (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
-    Tcl_CreateObjCommand (interp,"::curl::sharestrerror",curlShareStringError,
+    Tcl_CreateObjCommand (interp, NS_PREFIX "sharestrerror",curlShareStringError,
             (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
-    Tcl_CreateObjCommand (interp,"::curl::multistrerror",curlMultiStringError,
+    Tcl_CreateObjCommand (interp, NS_PREFIX "multistrerror",curlMultiStringError,
             (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
 
     Tclcurl_MultiInit(interp);
 
-    Tcl_PkgProvide(interp,"TclCurl",PACKAGE_VERSION);
+    Tcl_PkgProvide(interp,PACKAGE_NAME,PACKAGE_VERSION);
 
     return TCL_OK;
 }

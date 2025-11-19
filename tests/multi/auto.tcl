@@ -1,6 +1,6 @@
 #!/usr/bin/wish
 
-package require TclCurl
+package require curl
 
 #wm withdraw .
 

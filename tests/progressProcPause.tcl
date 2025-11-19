@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 # Another one of my contrived but working examples.
 

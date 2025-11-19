@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 curl::transfer -url 127.0.0.1 -range "100-500"
 

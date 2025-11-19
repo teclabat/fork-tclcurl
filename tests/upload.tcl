@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 
 curl::transfer -url ftp://andres:ciclope4@127.0.01/cosa.tcl                 \

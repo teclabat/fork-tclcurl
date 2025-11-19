@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 set buffer ""
 if {[catch {curl::transfer -url ftp://127.0.0.1/Test/cosa.tcl \

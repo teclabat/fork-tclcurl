@@ -19,7 +19,7 @@ dnl	to configure the system for the local environment.
 # so you can encode the package version directly into the source files.
 #-----------------------------------------------------------------------
 
-AC_INIT([TclCurl], [7.22.1])
+AC_INIT([curl], [7.22.1])
 
 #--------------------------------------------------------------------
 # Call TEA_INIT as the first TEA_ macro to set up initial vars.
@@ -165,6 +165,7 @@ TEA_ADD_LIBS([`$curlpath/curl-config --libs|sed \
 if test "${TEA_PLATFORM}" = "windows" ; then
     AC_DEFINE(BUILD_sample, 1, [Build windows export dll])
     CLEANFILES="$CLEANFILES *.lib *.dll *.exp *.ilk *.pdb vc*.pch"
+    TEA_ADD_LIBS([-lws2_32])
     #TEA_ADD_SOURCES([win/winFile.c])
     #TEA_ADD_INCLUDES([-I\"$(${CYGPATH} ${srcdir}/win)\"])
 else
@@ -246,6 +247,7 @@ TEA_MAKE_LIB
 #--------------------------------------------------------------------
 
 TEA_PROG_TCLSH
+TEA_PROG_INSTALLED_TCLSH
 #TEA_PROG_WISH
 
 #--------------------------------------------------------------------
