@@ -1,7 +1,7 @@
 # The share interface support is not yet completely done, since
 # you can't use it with the multi interface.
 
-package require TclCurl
+package require curl
 
 set sHandle [curl::shareinit]
 $sHandle share dns

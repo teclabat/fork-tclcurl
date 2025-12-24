@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 curl::transfer -url "ftp://127.0.0.1/pub/" -ftplistonly 1
 

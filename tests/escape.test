@@ -1,6 +1,6 @@
 #!/usr/local/bin/tclsh
 
-package require TclCurl
+package require curl
 package require tcltest
 namespace import ::tcltest::*
 

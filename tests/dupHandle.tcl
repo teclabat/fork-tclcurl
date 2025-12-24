@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 set curlHandle1 [curl::init]
 

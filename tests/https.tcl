@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 if {$tcl_platform(platform)=="windows"} {
     set certFile [file join $env(windir) curl-ca-bundle.crt]

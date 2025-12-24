@@ -1,6 +1,6 @@
 #!/usr/bin/wish
 
-package require TclCurl
+package require curl
 
 proc CleanUp {multiHandle easyHandle} {
     puts "\n\nCleaning up $multiHandle - $easyHandle\n\n"

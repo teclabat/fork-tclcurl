@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 set curlHandle [curl::init]
 $curlHandle configure -url "Shire.Asturias.com" -errorbuffer errorMsg

@@ -137,6 +137,8 @@ PKG_ENV		= @LD_LIBRARY_PATH_VAR@="$(EXTRA_PATH):$(@LD_LIBRARY_PATH_VAR@)" \
 		  TCLLIBPATH="$(TCLLIBPATH)"
 
 TCLSH_PROG	= @TCLSH_PROG@
+# Installed tclsh for testing
+INSTALLED_TCLSH	= @INSTALLED_TCLSH@
 TCLSH   	= $(PKG_ENV) $(TCLSH_ENV) $(TCLSH_PROG)
 
 #WISH_ENV	= TK_LIBRARY=`@CYGPATH@ $(TK_SRC_DIR)/library`
@@ -239,7 +241,7 @@ install-doc: doc
 	done
 
 test: binaries libraries
-	cd $(srcdir)/tests && $(TCLSH) `@CYGPATH@ ./all.tcl` $(TESTFLAGS)
+	cd $(srcdir)/tests && $(INSTALLED_TCLSH) `@CYGPATH@ ./all.tcl` $(TESTFLAGS)
 
 shell: binaries libraries
 	@$(TCLSH) $(SCRIPT)
