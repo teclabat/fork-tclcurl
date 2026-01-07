@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 puts "cURL is installed in: [curl::curlConfig -prefix]"
 

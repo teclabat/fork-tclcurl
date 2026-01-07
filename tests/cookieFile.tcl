@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 if {![file exists /home/andres/.getleft/cookies]} {
     puts "The given cookie file doesn't exist"

@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 curl::transfer -url "ftp://Strider.Asturias.es" -verbose 1           \
         -netrc required -netrcfile "/home/andres/testnetrc"

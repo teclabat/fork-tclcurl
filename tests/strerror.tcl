@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 puts "The error string for code 6 is '[curl::easystrerror 6]'"
 

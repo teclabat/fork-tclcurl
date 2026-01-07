@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 # These tests has some urls that don't exists outside my system,
 # so IT WON'T WORK FOR YOU unless you change them.

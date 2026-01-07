@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 proc Perform {multiHandle} {
     if {[catch {$multiHandle active} activeTransfers]} {

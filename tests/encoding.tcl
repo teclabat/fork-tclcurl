@@ -1,4 +1,4 @@
-package require TclCurl
+package require curl
 
 curl::transfer -url "http://127.0.0.1" -encoding deflated -verbose 1
 
