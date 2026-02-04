@@ -43,11 +43,11 @@ EXTERN int
 Curl_Init (Tcl_Interp *interp) {
 
 #ifdef USE_TCL_STUBS
-    if (Tcl_InitStubs(interp,"8.5",0)==NULL) {
+    if (Tcl_InitStubs(interp,"8.6-",0)==NULL) {
         return TCL_ERROR;
     }
 #else
-    if (Tcl_PkgRequire(interp,"Tcl","8.5",0)==NULL) {
+    if (Tcl_PkgRequire(interp,"Tcl","8.6-",0)==NULL) {
         return TCL_ERROR;
     }
 #endif
@@ -80,6 +80,61 @@ Curl_Init (Tcl_Interp *interp) {
     Tcl_PkgProvide(interp,PACKAGE_NAME,PACKAGE_VERSION);
 
     return TCL_OK;
+}
+
+/*
+ * Tcl 9 lowercase init function aliases
+ * Note: We duplicate the init code rather than calling Curl_Init to avoid
+ * Windows DLL import/export issues.
+ */
+#undef TCL_STORAGE_CLASS
+#define TCL_STORAGE_CLASS DLLEXPORT
+
+EXTERN int
+curl_Init(Tcl_Interp *interp) {
+#ifdef USE_TCL_STUBS
+    if (Tcl_InitStubs(interp,"8.6-",0)==NULL) {
+        return TCL_ERROR;
+    }
+#else
+    if (Tcl_PkgRequire(interp,"Tcl","8.6-",0)==NULL) {
+        return TCL_ERROR;
+    }
+#endif
+
+    // create namespace
+    if (Tcl_CreateNamespace(interp, NS_PREFIX, NULL, NULL) == NULL)
+        return TCL_ERROR;
+
+    Tcl_CreateObjCommand (interp, NS_PREFIX "init",curlInitObjCmd,
+            (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateObjCommand (interp, NS_PREFIX "version",curlVersion,
+            (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateObjCommand (interp, NS_PREFIX "escape",curlEscape,
+            (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateObjCommand (interp, NS_PREFIX "unescape",curlUnescape,
+            (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateObjCommand (interp, NS_PREFIX "versioninfo",curlVersionInfo,
+            (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateObjCommand (interp, NS_PREFIX "shareinit",curlShareInitObjCmd,
+            (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateObjCommand (interp, NS_PREFIX "easystrerror", curlEasyStringError,
+            (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateObjCommand (interp, NS_PREFIX "sharestrerror",curlShareStringError,
+            (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
+    Tcl_CreateObjCommand (interp, NS_PREFIX "multistrerror",curlMultiStringError,
+            (ClientData)NULL,(Tcl_CmdDeleteProc *)NULL);
+
+    Tclcurl_MultiInit(interp);
+
+    Tcl_PkgProvide(interp,PACKAGE_NAME,PACKAGE_VERSION);
+
+    return TCL_OK;
+}
+
+EXTERN int
+curl_SafeInit(Tcl_Interp *interp) {
+    return curl_Init(interp);
 }
 
 /*
@@ -471,7 +526,7 @@ curlSetOpts(Tcl_Interp *interp, struct curlObjData *curlData,
 
     int            exitCode;
     CURL           *curlHandle=curlData->curl;
-    int            i,j,k;
+    Tcl_Size       i,j,k;
 
     Tcl_Obj        *resultObjPtr;
     Tcl_Obj        *tmpObjPtr;
@@ -491,7 +546,7 @@ curlSetOpts(Tcl_Interp *interp, struct curlObjData *curlData,
     int                       curlTableIndex,formaddError,formArrayIndex;
     struct formArrayStruct   *newFormArray;
     struct curl_forms        *formArray;
-    int                       curlformBufferSize;
+    Tcl_Size                  curlformBufferSize;
     size_t                    contentslen;
 
     unsigned long int         protocolMask;
@@ -2443,7 +2498,7 @@ int
 SetoptBlob(Tcl_Interp *interp,CURL *curlHandle,
         CURLoption opt,int tableIndex,Tcl_Obj *tclObj) {
     struct curl_blob   optionBlob;
-    int                len;
+    Tcl_Size           len;
 
     optionBlob.data = Tcl_GetByteArrayFromObj(tclObj,&len);
     if (optionBlob.data) {
@@ -2518,7 +2573,7 @@ SetoptSHandle(Tcl_Interp *interp,CURL *curlHandle,
 int
 SetoptsList(Tcl_Interp *interp,struct curl_slist **slistPtr,
         Tcl_Obj *const objv) {
-    int         i,headerNumber;
+    Tcl_Size    i,headerNumber;
     Tcl_Obj     **headers;
 
     if (slistPtr!=NULL) {
@@ -2760,11 +2815,11 @@ curlWriteProcInvoke(void *ptr,size_t size,size_t nmemb,FILE *curlDataPtr) {
     struct curlObjData  *curlData = (struct curlObjData *)curlDataPtr;
     register int        curl_retcode;
     int                 code;
-    int                 cmd_list_size;
+    Tcl_Size            cmd_list_size;
     const char        **argvPtr;
-    int                 argcPtr;
+    Tcl_Size            argcPtr;
     Tcl_Obj**           objList;
-    int                 i;
+    Tcl_Size            i;
 
     if (curlData->cancelTransVarName) {
         if (curlData->cancelTrans) {
@@ -2825,7 +2880,7 @@ curlReadProcInvoke(void *ptr,size_t size,size_t nmemb,FILE *curlDataPtr) {
     Tcl_Obj             *tclProcPtr;
     Tcl_Obj             *readDataPtr;
     unsigned char       *readBytes;
-    int                  sizeRead;
+    Tcl_Size             sizeRead;
 
     if (curlData->cancelTransVarName) {
         if (curlData->cancelTrans) {
