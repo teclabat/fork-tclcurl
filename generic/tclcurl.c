@@ -82,13 +82,14 @@ Curl_Init (Tcl_Interp *interp) {
     return TCL_OK;
 }
 
+EXTERN int
+Curl_SafeInit(Tcl_Interp *interp) {
+    return Curl_Init(interp);
+}
+
 /*
  * Tcl 9 lowercase init function aliases
- * Note: We duplicate the init code rather than calling Curl_Init to avoid
- * Windows DLL import/export issues.
  */
-#undef TCL_STORAGE_CLASS
-#define TCL_STORAGE_CLASS DLLEXPORT
 
 EXTERN int
 curl_Init(Tcl_Interp *interp) {

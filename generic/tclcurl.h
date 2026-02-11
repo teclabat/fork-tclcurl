@@ -52,7 +52,7 @@ extern "C" {
  * I ever understand what it is for.
  */
 
-#ifdef BUILD_TclCurl
+#ifdef BUILD_curl
 #undef  TCL_STORAGE_CLASS
 #define TCL_STORAGE_CLASS DLLEXPORT
 #endif
@@ -405,7 +405,8 @@ int Tclcurl_MultiInit (Tcl_Interp *interp);
 
 #endif
 
-EXTERN int Tclcurl_Init(Tcl_Interp *interp);
+EXTERN int Curl_Init(Tcl_Interp *interp);
+EXTERN int Curl_SafeInit(Tcl_Interp *interp);
 
 Tcl_Obj* curlCreateObjCmd(Tcl_Interp *interp,struct curlObjData  *curlData);
 int curlInitObjCmd(ClientData clientData, Tcl_Interp *interp, int objc,
